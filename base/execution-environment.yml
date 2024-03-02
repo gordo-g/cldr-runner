@@ -23,7 +23,6 @@ dependencies:
     package_pip: ansible-core~=2.12.10
   galaxy: requirements.yml
   python: requirements.txt
-  system: bindep.txt
 
 additional_build_files:
   - src: bashrc
@@ -31,7 +30,6 @@ additional_build_files:
 
 additional_build_steps:
   prepend_builder:
-    - RUN yum install -y yum-utils && yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo  
   prepend_final:
     - ARG BUILD_VER="base-latest"
     - ARG BUILD_DATE="unknown"
@@ -51,11 +49,10 @@ additional_build_steps:
       org.opencontainers.image.version="${BUILD_VER}"
       org.opencontainers.image.revision="${BUILD_REVISION}"
     - RUN /usr/bin/python3 -m pip install --upgrade pip
-    - RUN yum install -y yum-utils && yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
     - RUN /usr/bin/python3 -m pip cache purge || echo "No Pip cache to purge"
     - RUN dnf clean all -y && rm -rf /var/cache/yum /var/cache/dnf /tmp/src
   append_final:
     - ADD _build/assets/bashrc /runner/.bashrc
     - RUN alternatives --set python /usr/bin/python3
     - RUN /usr/bin/python3 -m pip cache purge || echo "No Pip cache to purge"
-    - RUN dnf clean all -y && rm -rf /var/cache/yum /var/cache/dnf /tmp/src    
+    - RUN dnf clean all -y && rm -rf /var/cache/yum /var/cache/dnf /tmp/src
