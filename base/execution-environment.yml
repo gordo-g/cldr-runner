@@ -29,7 +29,6 @@ additional_build_files:
     dest: assets
 
 additional_build_steps:
-  prepend_builder:
   prepend_final:
     - ARG BUILD_VER="base-latest"
     - ARG BUILD_DATE="unknown"
